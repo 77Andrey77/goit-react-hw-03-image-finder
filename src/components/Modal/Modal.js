@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
-import s from '../Modal/Modal.css';
+import s from '../Modal/Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');
 

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { Component } from 'react';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
-// import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
-// import s from '../ImageGallery/ImageGallery';
+
+import s from '../ImageGallery/ImageGallery.module.css';
 
 export default class ImageGallery extends Component {
   state = {
     images: [],
+    loading: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -16,51 +17,31 @@ export default class ImageGallery extends Component {
     if (prevName !== nextName) {
       console.log('изменился запрос');
 
-      // this.fetchImg();
+      this.setState({ loading: true });
+
       axios
         .get(
           `https://pixabay.com/api/?q=${nextName}&page=1&key=19032313-4dd4b1c57c2e902bf9f549139&image_type=photo&orientation=horizontal&per_page=12`,
         )
-        // .then(res => res.json())
-        .then(response => this.setState({ images: response.data.hits }));
+        .then(response => this.setState({ images: response.data.hits }))
+        .finally(() => this.setState({ loading: false }));
     }
   }
 
   render() {
-    const { images } = this.state;
+    const { images, loading } = this.state;
     return (
-      <ul>
-        {images.map(image => (
+      <ul className={s.ImageGallery}>
+        {loading && <div>Загружаем ....</div>}
+        {images.map(({ id, webformatURL, tags, largeImageURL }) => (
           <ImageGalleryItem
-            key={image.id}
-            src={image.webformatURL}
-            alt={image.tags}
-            largeImageUrl={image.largeImageURL}
+            key={id}
+            webformatURL={webformatURL}
+            tags={tags}
+            largeImageURL={largeImageURL}
           />
         ))}
       </ul>
     );
   }
 }
-//<li key={image.id}>
-// <img src={image.webformatURL} alt={image.tags} />
-//</li>;
-//  <ul className={s.ImageGallery}>
-//         {images.map(image => (
-//           <ImageGalleryItem
-//             key={image.id}
-//             src={image.webformatURL}
-//             largeImageUrl={image.largeImageURL}
-//             alt={image.tags}
-//           />
-//         ))}
-//       </ul>
-
-// images.map(image => (
-//   <ImageGalleryItem
-//     key={images.id}
-//     src={image.webformatURL}
-//     largeImageUrl={image.largeImageURL}
-//     alt={image.tags}
-//   />
-// ));

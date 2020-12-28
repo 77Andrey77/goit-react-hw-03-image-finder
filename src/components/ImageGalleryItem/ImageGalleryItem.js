@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import s from '../ImageGalleryItem/ImageGalleryItem.css';
+import s from '../ImageGalleryItem/ImageGalleryItem.module.css';
 
 import Modal from '../Modal/Modal';
 
@@ -10,9 +10,9 @@ export default class ImageGalleryItem extends Component {
   };
 
   static propTypes = {
-    src: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired,
-    largeImageUrl: PropTypes.string.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
   };
 
   toggleModal = () => {
@@ -37,18 +37,18 @@ export default class ImageGalleryItem extends Component {
   // }
 
   render() {
-    const { id, src, alt, largeImageUrl } = this.props;
+    const { webformatURL, tags, largeImageURL } = this.props;
     const { showModal } = this.state;
     return (
-      <li className={s.ImageGalleryItem} key={id}>
+      <li className={s.ImageGalleryItem}>
         <img
           onClick={this.toggleModal}
-          src={src}
-          alt={alt}
+          src={webformatURL}
+          alt={tags}
           className={s.ImageGalleryItemImage}
         />
         {showModal && (
-          <Modal onClose={this.toggleModal} src={largeImageUrl} alt={alt} />
+          <Modal onClose={this.toggleModal} src={largeImageURL} alt={tags} />
         )}
       </li>
     );

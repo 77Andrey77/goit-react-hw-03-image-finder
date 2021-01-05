@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import '../Searchbar/Searchbar.css';
 
 export default class Searchbar extends Component {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
+  // static propTypes = {
+  //   onSubmit: PropTypes.func.isRequired,
+  // };
 
   state = {
     searchName: '',
@@ -49,3 +49,6 @@ export default class Searchbar extends Component {
     );
   }
 }
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

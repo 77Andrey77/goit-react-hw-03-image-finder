@@ -7,11 +7,9 @@ import s from '../Modal/Modal.module.css';
 const modalRoot = document.querySelector('#modal-root');
 
 class Modal extends Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    src: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired,
-  };
+  // static propTypes = {
+  //   onClose: PropTypes.func.isRequired,
+  // };
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -34,12 +32,11 @@ class Modal extends Component {
   };
 
   render() {
-    const { src, alt } = this.props;
-
+    const { largeImageURL } = this.props;
     return createPortal(
       <div className={s.Overlay} onClick={this.handleBackdropClick}>
         <div className={s.Modal}>
-          <img src={src} alt={alt} className={s.ImageGalleryItemImage} />
+          <img src={largeImageURL} alt="" className={s.ImageGalleryItemImage} />
         </div>
       </div>,
       modalRoot,
@@ -48,3 +45,7 @@ class Modal extends Component {
 }
 
 export default Modal;
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};

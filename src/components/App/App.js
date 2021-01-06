@@ -6,7 +6,7 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import Modal from '../Modal/Modal';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
-// import Button from '../Button/Button';
+import Button from '../Button/Button';
 
 export default class App extends Component {
   state = {
@@ -16,6 +16,8 @@ export default class App extends Component {
     loading: false,
     showModal: false,
     largeImageURL: '',
+    arePicturesOver: false,
+    // totalImg: '',
   };
 
   /////////////////////// проверяем изменение запроса
@@ -32,16 +34,19 @@ export default class App extends Component {
     }
 
     if (prevState.page !== this.state.page) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-      });
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      }, 1000);
     }
   }
 
   ///////////////////////////////////Api
 
   fetchImages = () => {
+    this.setState({ loading: true });
     apiService
       .fetchImagesWithQuery(this.state.searchName, this.state.page)
       .then(response =>
@@ -54,6 +59,9 @@ export default class App extends Component {
       .finally(() => this.setState({ loading: false }));
   };
   //////////////////////////////////////////
+  // let overPictures =totalHits-(page*12)  ;
+
+  ///////////////////////////////////////////////
   // toggleLoader = () => {
   //   this.setState(({ loading }) => ({ loading: !loading }));
   // };
@@ -63,7 +71,7 @@ export default class App extends Component {
     this.setState({ searchName: searchName, page: 1, images: [] });
   };
   ////////////////////////// loade more
-  handleLoadeMore = onClick => {
+  handleLoadeMore = () => {
     this.fetchImages();
   };
 
@@ -87,6 +95,14 @@ export default class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
+
+        {images.length > 0 && (
+          <ImageGallery
+            images={images}
+            handleLoadeMore={this.handleLoadeMore}
+            onOpenModal={this.onOpenModal}
+          />
+        )}
         {loading && (
           <Loader
             type="Puff"
@@ -97,12 +113,8 @@ export default class App extends Component {
             style={{ textAlign: 'center' }}
           />
         )}
-        {images.length > 0 && (
-          <ImageGallery
-            images={images}
-            handleLoadeMore={this.handleLoadeMore}
-            onOpenModal={this.onOpenModal}
-          />
+        {!loading && images.length > 11 && (
+          <Button onClick={this.handleLoadeMore} />
         )}
 
         {showModal && (
